@@ -12,11 +12,13 @@ After following the steps in the above link, we created a custom image and share
 
 https://github.com/openenclave/openenclave/blob/master/samples/BuildSamplesLinux.md
 
-`cp -r /opt/openenclave/share/openenclave/samples ~/mysamples`
-`. /opt/openenclave/share/openenclave/openenclaverc`
-`cd ~/mysamples/helloworld`
-`make build`
-`make run`
+```bash
+cp -r /opt/openenclave/share/openenclave/samples ~/mysamples
+. /opt/openenclave/share/openenclave/openenclaverc
+cd ~/mysamples/helloworld
+make build
+make run
+```
 
 # Debugging
 ## 'Failed to open Intel SGX device' when running 'make run'
