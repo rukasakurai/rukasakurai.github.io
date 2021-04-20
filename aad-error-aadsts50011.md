@@ -3,3 +3,5 @@
 The [documentation on docs.microsoft.com](https://docs.microsoft.com/troubleshoot/azure/active-directory/error-code-aadsts50011-reply-url-mismatch) as of April 16 2021, has some basic information about the cause of the error and resolution. My intention here is to eleborate on additional details regarding the cause and resolution.
 
 ## Case study 1: Application with a reverse proxy
+### Solution
+There's a possiblity that the solution might be the same as [RemoteAuthenticationHandler Error](./RemoteAuthenticationHandler-error.md)
