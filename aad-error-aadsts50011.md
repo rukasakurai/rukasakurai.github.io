@@ -13,6 +13,7 @@ The reason this error is challenging is because it involves the integration betw
 - Web Application
 - Browser
 - Often intermediary systems such as non-Azure reverse proxies, or load balalancing services on Azure (e.g., Application Gateway, Front Door)
+
 each often managed by a different team or even different companies, where no single person has access to all the information that is needed to resolve the error.
 
 ## Azure Support Request
