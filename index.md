@@ -7,3 +7,4 @@
 - [Sequence Diagrams](sequence-diagrams.md)
 - [Updating a QnA Maker Knowledge Base](./qnamaker-update-knowledge-base.md)
 - [RemoteAuthenticationHandler Error](./RemoteAuthenticationHandler-error.md)
+- [TLS](./tls.md)
