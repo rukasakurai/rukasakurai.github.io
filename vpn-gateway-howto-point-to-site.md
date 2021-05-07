@@ -1,5 +1,5 @@
 # Official Documentation
-https://docs.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-howto-point-to-site-resource-manager-portal
+[Configure a Point-to-Site VPN connection to a VNet using native Azure certificate authentication: Azure portal](https://docs.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-howto-point-to-site-resource-manager-portal)
 
 # Notes from when I went through the official documentation
 - Spent about 1.5-2 hours from start (reading the documentation) to end (testing the P2S VPN connection)
@@ -14,12 +14,15 @@ https://docs.microsoft.com/en-us/azure/vpn-gateway/vpn-gateway-howto-point-to-si
 # Screen shots that were not in the official documentation
 ## Microsoft Defender SmartScreen
 Just needed to click "More Info" as described in the documentation
+
 ![](2021-05-07-09-08-06.png)
 
 ## Connection Manager needing elevated priviledge to update routing table
 Just needed to click "Continue"
+
 ![](2021-05-07-11-15-04.png)
 
 ## When RDPing to private IP address without VPN connection
 The following popped up when RDPing to private IP address without VPN connection, which was expected behavior
+
 ![](2021-05-07-11-23-14.png)
