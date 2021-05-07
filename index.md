@@ -8,3 +8,5 @@
 - [Updating a QnA Maker Knowledge Base](./qnamaker-update-knowledge-base.md)
 - [RemoteAuthenticationHandler Error](./RemoteAuthenticationHandler-error.md)
 - [TLS](./tls.md)
+- [Software development with GitHub and Azure](./github-and-azue.md)
+- [Configure a Point-to-Site VPN connection to a VNet](./vpn-gateway-howto-point-to-site.md)
