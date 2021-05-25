@@ -1,0 +1,1 @@
+Plan is to pick either [Reliability](https://docs.microsoft.com/en-us/azure/advisor/advisor-high-availability-recommendations) or [Security](https://docs.microsoft.com/en-us/azure/advisor/advisor-security-recommendations), and implement some of the recommendations, to see my advisor score improve
