@@ -30,6 +30,7 @@ Step 1
 # Azure Test Plans
 [Azure Test Plans](https://docs.microsoft.com/en-us/azure/devops/test/overview) which is part of Azure DevOps is a tool to support manual testing.
 
-## Using Azure Test Plans in Scrum
-https://daveklloyd.medium.com/azure-test-plans-test-cases-39aa1fb1e9b7
-https://daveklloyd.medium.com/azure-test-plans-test-plans-212fbaaa68e3
+# Using Azure Test Plans
+Using Azure Test Plans occurs mainly in two steps. The first is to create the tests, and the second is to run the tests. Test cases are created as Test Cases, and Test Cases are grouped into Test Plans or Test Suites. Test Cases in Test Plans or Test Suites can be executed manually by 'Run'ning them, and the results will appear under Progress report and Runs. 
+[Best practices for creating Test Cases](https://daveklloyd.medium.com/azure-test-plans-test-cases-39aa1fb1e9b7)
+[Best practices for creating and executing Test Plans](https://daveklloyd.medium.com/azure-test-plans-test-plans-212fbaaa68e3)
