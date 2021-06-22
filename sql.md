@@ -15,7 +15,7 @@ az sql db delete --name coreDB --resource-group rg-DemoProduct --server sql-serv
 az storage blob generate-sas --account-name stdemoproduct -c dbbackup -n coreDB-2021-5-12-14-39.bacpac --permissions r  --expiry 2021-05-15T00:00:00Z
 az sql db create --name coreDB --resource-group rg-DemoProduct --server sql-server-ruka --edition "GeneralPurpose"
 az sql db import -s sql-server-ruka -n coreDB -g rg-DemoProduct -p <password> -u <userame> \
-    --storage-key "se=2021-05-15T00%3A00%3A00Z&sp=r&sv=2018-11-09&sr=b&sig=E%2FdZuMt%2B%2Fmjl4PSMaOJL7JYpTEMCyNbGDymc5p46tsc%3D" \
+    --storage-key <Blob SAS Token> \
     --storage-key-type SharedAccessKey \
     --storage-uri https://stdemoproduct.blob.core.windows.net/dbbackup/coreDB-2021-5-12-14-39.bacpac
 
