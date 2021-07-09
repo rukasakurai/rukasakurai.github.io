@@ -1,7 +1,6 @@
 *Under construction*
 # Context
-Testing 
-
+Testing a product/service before launch is a critical part within the process of delivering value to customers, and using relevant technology can be very useful.
 
 # Who/what does the testing
 Same as most other task, testing can be automated by machines (e.g., Azure virtual machines). However, just because it can be automated by machines doesn't automatically mean that it should be. In some/many cases humans are capable of performing testing faster, cheaper, and with higher quality.
