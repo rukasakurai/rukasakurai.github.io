@@ -11,6 +11,7 @@
 - [Configure a Point-to-Site VPN connection to a VNet](./vpn-gateway-howto-point-to-site.md)
 - [Testing (WIP)](./testing.md)
 - [Network troubleshooting (WIP)](./network-troubleshooting.md)
+- [ASP.NET Web Application (.NET Framework) (WIP)](aspnet-application.md)
 - GitHub and Azure (WIP)
 - Azure Advisor (WIP)
 - Azure confidential computing (WIP)
