@@ -2,6 +2,8 @@
 - .NET Framework: is a software framework developed by Microsoft that runs primarily on Microsoft Windows
 - Classic ASP: Active Server Pages (ASP) is Microsoft's first server-side scripting language and engine for dynamic web pages. It was first released in December 1996, before being superseded in January 2002 by ASP.NET.
 - ASP.NET is a server-side web-application framework. It was developed by Microsoft to allow programmers to build dynamic web sites, applications and services. It was first released in January 2002. ASP.NET's successor is ASP.NET Core.
+  - ASP.NET Web Forms: ASP.NET Web Forms is a web application framework and one of several programming models supported by the Microsoft ASP.NET technology. Unlike newer ASP.NET components, Web Forms is not supported by ASP.NET Core.
 - ASP.NET Core is a free and open-source web framework and successor to ASP.NET
-- Windows Communication Foundation (WCF) is a free and open-source runtime and a set of APIs in the .NET Framework. It was initially released in 2006
-
+- Windows Communication Foundation (WCF) is a free and open-source runtime and a set of APIs in the .NET Framework. It was initially released in 2006. I believe all WCF applications use System.ServiceModel.
+- web.cofig: Config file needd for IIS and App Service https://blog.shibayan.jp/entry/20190604/1559616472
+- COM and COM+ components: Component Object Model (COM) is a binary-interface standard for software components introduced by Microsoft in 1993. Around 2012, it was recommended to migrate COM components to .NET Framework

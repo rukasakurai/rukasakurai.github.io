@@ -27,3 +27,17 @@ A: Ways to restrict access to App Service to specific sources include
 Q: How does one apply a TLS client certificate to App Service?
 A: Can't currently find App Service specific documentation. [This ASP.NET documentation](https://docs.microsoft.com/aspnet/core/security/authentication/certauth), might be relevant for C#/ASP.NET
 
+Q: How does one make a PFX file?
+A: 
+- One way is `openssl pkcs12 -export -out certificate.pfx -inkey privateKey.key -in certificate.crt -certfile more.crt`
+- References:
+  - https://www.ssl.com/how-to/create-a-pfx-p12-certificate-file-using-openssl/
+  - https://www.secomtrust.net/service/pfw/apply/sr/3_2_AZURE_APPGW.html
+  - https://rms.ne.jp/sslserver/csr/csr_azure-cloud-services/
+  - https://en.wikipedia.org/wiki/PKCS_12
+- Some TLS certificate provides don't provide instructures for creating PFX files:
+  - https://www.cybertrust.co.jp/sureserver/support/technical/iis10.html#
+
+Q: How does one add TLS to a website hosted on Azure App Service using LetsEncrypt?
+A: https://medium.com/@marcmathijssen/add-ssl-to-azure-web-app-using-letsencrypt-9125c3fdfb03
+- The above blog uses an HTTP challenge, but I found it easier to use a DNS challenge.
