@@ -3,15 +3,13 @@ Under contruction
 # Kubernetes
 
 # Azure Kubernetes Service (AKS)
-1. [Deploying a sample image managed by Microsoft to AKS](#Deploying a sample image managed by Microsoft to AKS)
-2. (Deploying a sample image from your own Azure Container Registry (ACR) to AKS
-3. (Building an image from sample code with a sample Dockerfile, pushing it to ACR, and deploying it to AKS
-4. (Create a new Dockerfile for sample code, building an image, pushing it to ACR, and deploying it to AKS
+1. Deploying a sample image managed by Microsoft to AKS
+2. Deploying a sample image from your own Azure Container Registry (ACR) to AKS
+3. Building an image from sample code with a sample Dockerfile, pushing it to ACR, and deploying it to AKS
+4. Create a new Dockerfile for sample code, building an image, pushing it to ACR, and deploying it to AKS
 ## Deploying a sample image managed by Microsoft to AKS 
-The below Learn tutorial provides steps to deploy a sample AKS application
-https://docs.microsoft.com/en-us/learn/modules/aks-deploy-container-app/
-Copying the commands outlined in the Learn tutorial. Was able to successfully deploy an application on my Azure subscription (as opposed to the Learn Sandbox subscription) without any trouble.
-It uses a container that is available at mcr.microsoft.com/mslearn/samples/contoso-website
+(This Learn tutorial)[https://docs.microsoft.com/en-us/learn/modules/aks-deploy-container-app/] provides steps to deploy a sample AKS application. Below are the commands outlined in the Learn tutorial. Was able to successfully deploy an application on my Azure subscription (as opposed to the Learn Sandbox subscription) using the Azure Cloud Shell without any trouble. It takes about x minutes (mostly time waiting for commands to finish executing). It uses a container that is available at mcr.microsoft.com/mslearn/samples/contoso-website.
+
 ```
 export RESOURCE_GROUP=rg-aks-contoso-video
 
