@@ -8,7 +8,7 @@ Under contruction
 3. Building an image from sample code with a sample Dockerfile, pushing it to ACR, and deploying it to AKS
 4. Create a new Dockerfile for sample code, building an image, pushing it to ACR, and deploying it to AKS
 ## Deploying a sample image managed by Microsoft to AKS 
-[This Learn tutorial](https://docs.microsoft.com/en-us/learn/modules/aks-deploy-container-app/) provides steps to deploy a sample AKS application. Below are the commands outlined in the Learn tutorial. Was able to successfully deploy an application on my Azure subscription (as opposed to the Learn Sandbox subscription) using the Azure Cloud Shell without any trouble. It takes about x minutes (mostly time waiting for commands to finish executing). It uses a container that is available at mcr.microsoft.com/mslearn/samples/contoso-website.
+[This Learn tutorial](https://docs.microsoft.com/en-us/learn/modules/aks-deploy-container-app/) provides steps to deploy a sample AKS application. Below are the commands outlined in the Learn tutorial. I was able to successfully deploy an application on my Azure subscription (as opposed to the Learn Sandbox subscription) using the Azure Cloud Shell without any trouble. It takes about 15 minutes (mostly time waiting for commands to finish executing, including about 5 minutes to create the Kubernetes cluster, and 5 minutes to create the additional node pool). It uses a container that is available at mcr.microsoft.com/mslearn/samples/contoso-website.
 
 ```
 export RESOURCE_GROUP=rg-aks-contoso-video
@@ -159,7 +159,7 @@ kubectl get ingress contoso-website
 ```
 
 ### Deploying a sample image from your own Azure Container Registry (ACR) to AKS
-Do the below first, and use `crcontosovideo.azurecr.io/contoso-website` in deployment.yaml, and then run `kubectl apply -f ./deployment.yaml`
+Do the below first, and use `crcontosovideo.azurecr.io/contoso-website` in deployment.yaml, and then run `kubectl apply -f ./deployment.yaml`. This takes about 5 minutes. (Since the deployed image is the same as the deployed image in the section before, there's no change to the application)
 ```
 export CONTAINER_REGISTRY=crContosoVideo
 
@@ -176,27 +176,26 @@ az acr repository show-manifests \
   --repository contoso-website
 
 az aks update -n $CLUSTER_NAME -g $RESOURCE_GROUP --attach-acr $CONTAINER_REGISTRY
-
-  ```
+```
 
 ### Building an image from sample code with a sample Dockerfile, pushing it to ACR, and deploying it to AKS
-Do the below first, and use `crcontosovideo.azurecr.io/webimage` in deployment.yaml, and then run `kubectl apply -f ./deployment.yaml`
+Do the below first, and use `crcontosovideo.azurecr.io/webimage` in deployment.yaml, and then run `kubectl apply -f ./deployment.yaml`. This should take about 5 minutes (including 2 minutes to build the image). The first time I tried it by using VS Code and its terminal worked, but the second time I tried it from the Azure Cloud Shell, the deployment failed with the new pod showing errors such as CrashLoopBackoff.
 ```
 git clone https://github.com/MicrosoftDocs/mslearn-deploy-run-container-app-service.git
 
 cd mslearn-deploy-run-container-app-service/dotnet
-
-<Modify the code if you'd like>
-
+```
+Modify the code with `code .` if you'd like, and then
+```
 az acr build --registry $CONTAINER_REGISTRY --image webimage .
 ```
 
 ### Create a new Dockerfile for sample code, building an image, pushing it to ACR, and deploying it to AKS
-Do the below first, and use `crcontosovideo.azurecr.io/mvcmovie` in deployment.yaml, and then run `kubectl apply -f ./deployment.yaml`
-In the integrated terminal for VS Code (can probably do it from the Azure Cloud Shell)
+Do the below first, and use `crcontosovideo.azurecr.io/mvcmovie` in deployment.yaml, and then run `kubectl apply -f ./deployment.yaml`. This takes about 5 minutes (including 2 minutes to build the image).
 ```
 dotnet new mvc -o MvcMovie
-code -r MvcMovie
+cd MvcMovie
+touch Dockerfile
 ```
 Craete the following Dockerfile
 ```
@@ -221,7 +220,6 @@ ENTRYPOINT ["dotnet", "MvcMovie.dll"]
 ```
 Run the following commands
 ```
-az login
 export CONTAINER_REGISTRY=crContosoVideo
 az acr build --registry $CONTAINER_REGISTRY --image mvcmovie .
 ```
