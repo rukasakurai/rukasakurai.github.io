@@ -3,7 +3,11 @@ Under contruction
 # Kubernetes
 
 # Azure Kubernetes Service (AKS)
-## Sample AKS application
+1. [Deploying a sample image managed by Microsoft to AKS](#Deploying a sample image managed by Microsoft to AKS)
+2. (Deploying a sample image from your own Azure Container Registry (ACR) to AKS
+3. (Building an image from sample code with a sample Dockerfile, pushing it to ACR, and deploying it to AKS
+4. (Create a new Dockerfile for sample code, building an image, pushing it to ACR, and deploying it to AKS
+## Deploying a sample image managed by Microsoft to AKS 
 The below Learn tutorial provides steps to deploy a sample AKS application
 https://docs.microsoft.com/en-us/learn/modules/aks-deploy-container-app/
 Copying the commands outlined in the Learn tutorial. Was able to successfully deploy an application on my Azure subscription (as opposed to the Learn Sandbox subscription) without any trouble.
@@ -67,8 +71,8 @@ kubectl get ingress contoso-website
 
 ```
 
-### Sample AKS application (deployment from Azure Container Registry)
-Do the below first, and use `crcontosovideo.azurecr.io/contoso-website` in deployment.yaml
+### Deploying a sample image from your own Azure Container Registry (ACR) to AKS
+Do the below first, and use `crcontosovideo.azurecr.io/contoso-website` in deployment.yaml, and then run `kubectl apply -f ./deployment.yaml`
 ```
 export CONTAINER_REGISTRY=crContosoVideo
 
@@ -88,8 +92,8 @@ az aks update -n $CLUSTER_NAME -g $RESOURCE_GROUP --attach-acr $CONTAINER_REGIST
 
   ```
 
-### Sample AKS application (deployment from code to ACR to AKS)
-Do the below first, and use `crcontosovideo.azurecr.io/webimage` in deployment.yaml
+### Building an image from sample code with a sample Dockerfile, pushing it to ACR, and deploying it to AKS
+Do the below first, and use `crcontosovideo.azurecr.io/webimage` in deployment.yaml, and then run `kubectl apply -f ./deployment.yaml`
 ```
 git clone https://github.com/MicrosoftDocs/mslearn-deploy-run-container-app-service.git
 
@@ -98,4 +102,39 @@ cd mslearn-deploy-run-container-app-service/dotnet
 <Modify the code if you'd like>
 
 az acr build --registry $CONTAINER_REGISTRY --image webimage .
+```
+
+### Create a new Dockerfile for sample code, building an image, pushing it to ACR, and deploying it to AKS
+Do the below first, and use `crcontosovideo.azurecr.io/mvcmovie` in deployment.yaml, and then run `kubectl apply -f ./deployment.yaml`
+In the integrated terminal for VS Code (can probably do it from the Azure Cloud Shell)
+```
+dotnet new mvc -o MvcMovie
+code -r MvcMovie
+```
+Craete the following Dockerfile
+```
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+WORKDIR /app
+EXPOSE 80
+
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+WORKDIR /src
+COPY MvcMovie.csproj .
+RUN dotnet restore MvcMovie.csproj
+COPY . .
+RUN dotnet build MvcMovie.csproj -c Release -o /app
+
+FROM build AS publish
+RUN dotnet publish MvcMovie.csproj -c Release -o /app
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app .
+ENTRYPOINT ["dotnet", "MvcMovie.dll"]
+```
+Run the following commands
+```
+az login
+export CONTAINER_REGISTRY=crContosoVideo
+az acr build --registry $CONTAINER_REGISTRY --image mvcmovie .
 ```
