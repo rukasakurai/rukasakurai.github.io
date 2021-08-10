@@ -179,7 +179,7 @@ az aks update -n $CLUSTER_NAME -g $RESOURCE_GROUP --attach-acr $CONTAINER_REGIST
 ```
 
 ### Building an image from sample code with a sample Dockerfile, pushing it to ACR, and deploying it to AKS
-Do the below first, and use `crcontosovideo.azurecr.io/webimage` in deployment.yaml, and then run `kubectl apply -f ./deployment.yaml`. This should take about 5 minutes (including 2 minutes to build the image). The first time I tried it by using VS Code and its terminal worked, but the second time I tried it from the Azure Cloud Shell, the deployment failed with the new pod showing errors such as CrashLoopBackoff.
+Do the below first, and use `crcontosovideo.azurecr.io/webimage` in deployment.yaml, and then run `kubectl apply -f ./deployment.yaml`. This takes about 5 minutes (including 2 minutes to build the image).
 ```
 git clone https://github.com/MicrosoftDocs/mslearn-deploy-run-container-app-service.git
 
@@ -199,11 +199,11 @@ touch Dockerfile
 ```
 Craete the following Dockerfile
 ```
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:3.1 AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
 WORKDIR /src
 COPY MvcMovie.csproj .
 RUN dotnet restore MvcMovie.csproj
@@ -223,3 +223,5 @@ Run the following commands
 export CONTAINER_REGISTRY=crContosoVideo
 az acr build --registry $CONTAINER_REGISTRY --image mvcmovie .
 ```
+
+Depending on the .NET version that `dotnet new mvc -o MvcMovie` uses, the version in the FROM commands might need to be changed. A mismatch in version could cause the pods to fail to start with errors (such as CrashLoopBackoff) displayed when `kubectl get pods`. If so, you can debug using `kubectl logs`.
