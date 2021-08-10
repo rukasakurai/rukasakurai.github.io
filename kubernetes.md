@@ -8,7 +8,7 @@ Under contruction
 3. Building an image from sample code with a sample Dockerfile, pushing it to ACR, and deploying it to AKS
 4. Create a new Dockerfile for sample code, building an image, pushing it to ACR, and deploying it to AKS
 ## Deploying a sample image managed by Microsoft to AKS 
-(This Learn tutorial)[https://docs.microsoft.com/en-us/learn/modules/aks-deploy-container-app/] provides steps to deploy a sample AKS application. Below are the commands outlined in the Learn tutorial. Was able to successfully deploy an application on my Azure subscription (as opposed to the Learn Sandbox subscription) using the Azure Cloud Shell without any trouble. It takes about x minutes (mostly time waiting for commands to finish executing). It uses a container that is available at mcr.microsoft.com/mslearn/samples/contoso-website.
+[This Learn tutorial](https://docs.microsoft.com/en-us/learn/modules/aks-deploy-container-app/) provides steps to deploy a sample AKS application. Below are the commands outlined in the Learn tutorial. Was able to successfully deploy an application on my Azure subscription (as opposed to the Learn Sandbox subscription) using the Azure Cloud Shell without any trouble. It takes about x minutes (mostly time waiting for commands to finish executing). It uses a container that is available at mcr.microsoft.com/mslearn/samples/contoso-website.
 
 ```
 export RESOURCE_GROUP=rg-aks-contoso-video
@@ -39,8 +39,45 @@ az aks get-credentials --name $CLUSTER_NAME --resource-group $RESOURCE_GROUP
 kubectl get nodes
 
 touch deployment.yaml
-<Edit yaml file>
+```
 
+Edit the yaml file with `code .` as follows
+
+```
+# deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: contoso-website
+spec:
+  selector: # Define the wrapping strategy
+    matchLabels: # Match all pods with the defined labels
+      app: contoso-website # Labels follow the `name: value` template
+  template: # This is the template of the pod inside the deployment
+    metadata:
+      labels:
+        app: contoso-website
+    spec:
+      nodeSelector:
+        kubernetes.io/os: linux
+      containers:
+        - image: mcr.microsoft.com/mslearn/samples/contoso-website
+          name: contoso-website
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+          ports:
+            - containerPort: 80
+              name: http
+```
+
+Continue with the following commands
+
+```
 kubectl apply -f ./deployment.yaml
 
 kubectl get deploy contoso-website
@@ -48,25 +85,77 @@ kubectl get deploy contoso-website
 kubectl get pods
 
 touch service.yaml
-<Edit yaml file>
+```
 
+Edit the yaml file with `code .` as follows
+
+```
+#service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: contoso-website
+spec:
+  type: ClusterIP
+  selector:
+    app: contoso-website
+  ports:
+    - port: 80 # SERVICE exposed port
+      name: http # SERVICE port name
+      protocol: TCP # The protocol the SERVICE will listen to
+      targetPort: http # Port to forward to in the POD
+```
+
+Continue as follows
+
+```
 kubectl apply -f ./service.yaml
 
 kubectl get service contoso-website
 
 touch ingress.yaml
-<Edit yaml file>
+```
 
+Edit the yaml file with `code .` as follows
+
+```
+#ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: contoso-website
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+spec:
+  rules:
+    - host: contoso.<uuid>.<region>.aksapp.io
+      http:
+        paths:
+          - backend: # How the ingress will handle the requests
+              service:
+               name: contoso-website # Which service the request will be forwarded to
+               port:
+                 name: http # Which port in that service
+            path: / # Which path is this rule referring to
+            pathType: Prefix # See more at https://kubernetes.io/docs/concepts/services-networking/ingress/#path-types
+```
+
+Continue as follows
+
+```
 az aks show \
   -g $RESOURCE_GROUP \
   -n $CLUSTER_NAME \
   -o tsv \
   --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName
+```
 
+Use the output and edit ingress.yaml, and then continue as follows
+
+```
 kubectl apply -f ./ingress.yaml
 
 kubectl get ingress contoso-website
-
 ```
 
 ### Deploying a sample image from your own Azure Container Registry (ACR) to AKS
