@@ -32,4 +32,6 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions {
 ```
 https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.builder?view=aspnetcore-3.1
 
+### "Sites that can never use cookies"
+If in the Google Chrome settings, the domain name of the website is set under "Privacy and security" > "Cookies and other site data" > "Sites that can never use cookies", then this can also cause this error.
 

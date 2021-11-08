@@ -1,12 +1,22 @@
-Under contruction
+Under contruction# Kubernetes
 
-# Kubernetes
+■ AKSの監視
+https://docs.microsoft.com/ja-jp/azure/aks/monitor-aks
+
+■ AKS∔Azure Firewallを使ったEgressトラフィックのルーティング
+Customize cluster egress with a User-Defined Route:
+https://docs.microsoft.com/en-us/azure/aks/egress-outboundtype
+
+
+■ あかまさんAKSセキュリティリファレンス:
+https://www.facebook.com/nobuyuki.akama.5/posts/2947887578638196
 
 # Azure Kubernetes Service (AKS)
 1. Deploying a sample image managed by Microsoft to AKS
 2. Deploying a sample image from your own Azure Container Registry (ACR) to AKS
 3. Building an image from sample code with a sample Dockerfile, pushing it to ACR, and deploying it to AKS
 4. Create a new Dockerfile for sample code, building an image, pushing it to ACR, and deploying it to AKS
+5. Using Azure Migrate to containerize an application 
 ## Deploying a sample image managed by Microsoft to AKS 
 [This Learn tutorial](https://docs.microsoft.com/en-us/learn/modules/aks-deploy-container-app/) provides steps to deploy a sample AKS application. Below are the commands outlined in the Learn tutorial. I was able to successfully deploy an application on my Azure subscription (as opposed to the Learn Sandbox subscription) using the Azure Cloud Shell without any trouble. It takes about 15 minutes (mostly time waiting for commands to finish executing, including about 5 minutes to create the Kubernetes cluster, and 5 minutes to create the additional node pool). It uses a container that is available at mcr.microsoft.com/mslearn/samples/contoso-website.
 
@@ -225,3 +235,33 @@ az acr build --registry $CONTAINER_REGISTRY --image mvcmovie .
 ```
 
 Depending on the .NET version that `dotnet new mvc -o MvcMovie` uses, the version in the FROM commands might need to be changed. A mismatch in version could cause the pods to fail to start with errors (such as CrashLoopBackoff) displayed when `kubectl get pods`. If so, you can debug using `kubectl logs`.
+
+### Using Azure Migrate to containerize an application 
+Reference: https://docs.microsoft.com/en-us/azure/migrate/tutorial-app-containerization-aspnet-kubernetes
+#### Demo creation steps
+
+# Azure Migrate
+
+The "Azure Migrate App Containerization">"Discover applications">"Validate" still did not work.
+
+-------------
+# Upgrading Kubernetes Cluster with minimal downtime
+
+https://omichels.github.io/zerodowntime-aks.html
+https://jonathan18186.medium.com/azure-kubernetes-service-aks-upgrades-1056a8ef83b6
+
+
+az aks get-upgrades --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --output table
+
+KUBERNETES_VERSION=1.21.1
+
+az aks upgrade \
+    --resource-group $RESOURCE_GROUP \
+    --name $CLUSTER_NAME \
+    --kubernetes-version $KUBERNETES_VERSION
+
+    started around 9:49
+    took about maybe 10-20 minutes?
+
+
+-----

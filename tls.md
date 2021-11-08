@@ -35,9 +35,11 @@ A:
   - https://www.secomtrust.net/service/pfw/apply/sr/3_2_AZURE_APPGW.html
   - https://rms.ne.jp/sslserver/csr/csr_azure-cloud-services/
   - https://en.wikipedia.org/wiki/PKCS_12
+  - https://au.godaddy.com/help/windows-install-codedriver-signing-certificate-and-create-pfx-file-2698 
 - Some TLS certificate provides don't provide instructures for creating PFX files:
   - https://www.cybertrust.co.jp/sureserver/support/technical/iis10.html#
 
 Q: How does one add TLS to a website hosted on Azure App Service using LetsEncrypt?
 A: https://medium.com/@marcmathijssen/add-ssl-to-azure-web-app-using-letsencrypt-9125c3fdfb03
 - The above blog uses an HTTP challenge, but I found it easier to use a DNS challenge.
+

@@ -59,4 +59,11 @@ As of April 22 2021, the following is displayed recommendations before submittin
   - Other
 - Adding the reply URL specified in the request to the list of reply URLs configured for the application
 
+# Debugging
+## 2021 September 21
+- Before the incident: Demo Product in the release environment displayed correctly
+- What was updated: I updated text in an html file
+- After the update: AADSTS50011 error, when refreshing the website
+- Resolution: Access the website again, and the error goes away
+- Cause: Not sure what that cause is, but it seems to happen everytime I update the code. Does not seem to happen for the production environment
 
