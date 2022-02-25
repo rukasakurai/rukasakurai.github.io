@@ -1,0 +1,3 @@
+https://docs.microsoft.com/en-us/powerapps/maker/model-driven-apps/build-first-model-driven-app
+
+Tried this on 2022/1/6 with an account with a Microsoft 365 Business Basic and Microsoft Power Automate Free account that I have Global Admin priviledges on. It asked me to create a Dataverse database first. I was able to create it with my Global Admin account, but not with another account with lower rights. I created the database with default settings (i.e., XDR as currency). Was able to run the created a model-driven app on my computer, and was able to share it with another user, but it did not appear on my phone. 

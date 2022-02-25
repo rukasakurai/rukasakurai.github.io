@@ -264,4 +264,5 @@ az aks upgrade \
     took about maybe 10-20 minutes?
 
 
------
+# Adding Azure Firewall
+

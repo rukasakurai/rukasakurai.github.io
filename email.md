@@ -19,3 +19,10 @@ Some things to consider when actually using SendGrid for a product (incomplete l
 - How to store the SendGrid API key in a secure manner (as opposed to for example saving it in code)
 - How to avoid the email being flagged as spam/junk
 - How to avoid the email being blocked from being sent
+
+# .eml file
+In Outlook and other applications, emails can be saved as .eml files. 
+https://en.wikipedia.org/wiki/Email#Filename_extensions
+
+When manually archiving emails to a file system (e.g., in your computer) saving the email as a .eml file can be useful. While the UX to do this is relatively simple in the desktop version of Outlook (https://support.microsoft.com/en-us/office/save-a-message-as-a-file-4821bcd4-7687-4d6d-a486-b89a291a56e2), as of 2022 Feb the UX for this on OWA is not straight-forward: 
+"To save email attachments to your desktop, start a new message > click to edit the message in a new window > select all emails you would like to download > drag the emails to the new message > click the down arrow on the attachment and download the email message, or send the message to yourself and then download all attachments." (https://www.quora.com/How-do-I-save-emails-and-attachments-from-Outlook-Web-App-to-my-desktop)

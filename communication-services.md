@@ -1,6 +1,6 @@
 # References
-Roadmap: https://github.com/Azure/Communication/blob/master/roadmap.md
-UI Library: https://azure.github.io/communication-ui-library/
+- Roadmap: https://github.com/Azure/Communication/blob/master/roadmap.md
+- UI Library: https://azure.github.io/communication-ui-library/
 
 # Sample Applications
 - Chat: https://github.com/Azure-Samples/communication-services-web-chat-hero
