@@ -30,6 +30,7 @@ https://mybuild.microsoft.com/sessions/9b302a26-7867-4c83-8e28-d51524e27762?sour
 ## Deploying and configuring a Confidential Computing VM
 ### Instructions and expected outcome
 By following [these instructions](https://github.com/microsoft/onnx-server-openenclave), I was able to run the following command, resulting in the following output on a Linux virutal machine on Azure
+
 ![](../img/2021-06-02-15-52-04.png)
 ### Tips for following the instructions
 While [this page](https://github.com/microsoft/onnx-server-openenclave) is the root for all instructions with multiple links, I ended up referencing the following pages

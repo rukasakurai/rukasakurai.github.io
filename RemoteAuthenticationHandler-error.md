@@ -8,7 +8,7 @@ System.Exception: An error was encountered while handling the remote login.
    at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
    at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddleware.Invoke(HttpContext context)
 ```
-![](2021-04-20-11-38-02.png)
+![](img/2021-04-20-11-38-02.png)
 
 ## Solutions
 ### Directly specifying context.Request.Host (Tested solution and works)

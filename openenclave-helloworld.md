@@ -22,4 +22,4 @@ make run
 
 # Debugging
 ## 'Failed to open Intel SGX device' when running 'make run'
-![](2021-04-09-18-13-07.png)
+![](img/2021-04-09-18-13-07.png)

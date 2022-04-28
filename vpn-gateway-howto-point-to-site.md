@@ -15,14 +15,14 @@
 ## Microsoft Defender SmartScreen
 Just needed to click "More Info" as described in the documentation
 
-![](2021-05-07-09-08-06.png)
+![](img/2021-05-07-09-08-06.png)
 
 ## Connection Manager needing elevated priviledge to update routing table
 Just needed to click "Continue"
 
-![](2021-05-07-11-15-04.png)
+![](img/2021-05-07-11-15-04.png)
 
 ## When RDPing to private IP address without VPN connection
 The following popped up when RDPing to private IP address without VPN connection, which was expected behavior
 
-![](2021-05-07-11-23-14.png)
+![](img/2021-05-07-11-23-14.png)
