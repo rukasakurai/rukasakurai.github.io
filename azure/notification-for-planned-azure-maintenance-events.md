@@ -5,4 +5,4 @@ What does the e-mail notification for planned Azure maintenance look like, when 
 ## As of March 9th 2021
 From: Microsoft Azure <azure-noreply@microsoft.com> 
 Subject: Action recommended: XXX Planned Maintenance
-![](2021-04-12-16-38-55.png)
+![](./img/2021-04-12-16-38-55.png)
