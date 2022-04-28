@@ -4,7 +4,7 @@ https://devblogs.microsoft.com/devops/cloud-based-load-testing-service-eol/
 # App Service
 ## Create Web App
 ```
-PREFIX=20220315temp
+PREFIX=myprefix
 RG=rg-$PREFIX
 PLAN=plan-$PREFIX
 APP=app-$PREFIX
@@ -17,8 +17,9 @@ az webapp create -g $RG -p $PLAN -n $APP
 ```
 LOADTESTING=lt-$PREFIX
 echo $LOADTESTING
+```
 Created Azure Load Testing (preview) resource from Azure Portal
-
+```
 echo $APP.azurewebsites.net
 ```
 
