@@ -1,3 +1,9 @@
+# Retired?
+https://docs.microsoft.com/en-us/answers/questions/773571/retirement-announcement-transition-to-question-ans.html
+Also received e-mail on 2022-03-18
+
+https://azure.microsoft.com/en-us/services/cognitive-services/question-answering/#overview
+
 # Updating a QnA Maker Knowledge Base
 ## Problem statement
 The situation is that I previous created a QnA Maker Knowledge Base, and I would like to update it with new knowledge that I have acquired. I have about 30 news question and answer pairs that I would like to add.

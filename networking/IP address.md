@@ -1,0 +1,1 @@
+Address: 168.63.129.16 is a virtual public IP address that's used to facilitate a communication channel to Azure platform resources. It applies to all regions and all national clouds, and it won't change.

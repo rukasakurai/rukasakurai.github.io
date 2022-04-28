@@ -1,3 +1,4 @@
+# SQL on Azure
 What is a good way to periodically initialize a database use for a demo app?
 e.g., APP_DB, BACKUP_DB
 
