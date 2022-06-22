@@ -1,0 +1,1 @@
+https://docs.microsoft.com/en-us/azure/service-fabric/quickstart-managed-cluster-portal
