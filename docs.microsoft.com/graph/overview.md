@@ -14,6 +14,8 @@ This should result in an error saying "Invalid URI: The format of the URI could 
 Did not see errors in the Windows 11 laptop I've been using for 2 years and in the Azure Cloud Shell, but got the following error message when running it on a new Windows 11 laptop: `error NU1100: Unable to resolve 'Microsoft.Extensions.Configuration.Binder (>= 6.0.0)' for 'net6.0'`
 https://docs.microsoft.com/en-us/nuget/reference/errors-and-warnings/nu1100
 
+Created a suggestion to improve the documentation: https://github.com/NuGet/docs.microsoft.com-nuget/issues/2791
+
 Installing Visual Studio Community 2022 with "ASP.NET and web development" and "Azure developement" and error changed to `error NU1101: Unable to find package Microsoft.Extensions.Conf
 iguration.Binder. No packages exist with this id in source(s): Microsoft Visual Studio Offline Packages`
 
