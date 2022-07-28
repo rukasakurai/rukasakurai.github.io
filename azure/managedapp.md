@@ -34,13 +34,57 @@ cd managedapp
 ```
 
 Edit if needed
+#### Testing the ARM template with arm-ttk
+```
+cd ~
+git clone https://github.com/Azure/arm-ttk
+```
+```
+cd $POSTFIX/managedapp
+pwsh
+Import-Module /home/ruka/arm-ttk/arm-ttk/arm-ttk.psd1
+$TestResults = Test-AzTemplate
+echo $TestResults
+$TestFailures =  $TestResults | Where-Object { -not $_.Passed }
+echo $TestFailures
+exit
+```
+### Testing the UI
+https://portal.azure.com/?feature.customPortal=false&#blade/Microsoft_Azure_CreateUIDef/SandboxBlade
+
+#### Testing the ARM template by deploying it
+##### With Azure CLO
 Test if needed, e.g.,
-- https://github.com/Azure/arm-ttk: Although the usefulness of this might be limited in practicality
 - deploy with `az deployment group create --resource-group $appDefinitionResourceGroup --template-file mainTemplate.json`
+
+##### With URI
+https://qiita.com/tsubasaxZZZ/items/e18d123a83ff2e0aa6f3  
+```
+pwsh
+$ARM_LOCATION=[System.Web.HTTPUtility]::UrlEncode("https://raw.githubusercontent.com/rukasakurai/managedapp/main/mainTemplate.json")
+$URI="https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/$ARM_LOCATION"
+echo $URI
+```
+
+Below does not work
+```
+pwsh
+$ARM_LOCATION=[System.Web.HTTPUtility]::UrlEncode("https://raw.githubusercontent.com/rukasakurai/managedapp/main/mainTemplate.json")
+$UI_DEF_LOCATION=[System.Web.HTTPUtility]::UrlEncode("https://raw.githubusercontent.com/rukasakurai/managedapp/main/createUiDefinition.json")
+$URI="https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/$ARM_LOCATION/uiFormDefinitionUri/$UI_DEF_LOCATION"
+echo $URI
+```
+
 
 ```
 zip -r app.zip mainTemplate.json createUiDefinition.json
 ```
+
+
+https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsebassem%2FAzure-ARM-UI%2Fmain%2Fazuredeploy.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fsebassem%2FAzure-ARM-UI%2Fmain%2FazuredeployUI.json
+
+https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsebassem%2FAzure-ARM-UI%2Fmain%2Fazuredeploy.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fsebassem%2FAzure-ARM-UI%2Fmain%2FazuredeployUI.json
+
 
 #### Option 1: Upload to GitHub
 ```
