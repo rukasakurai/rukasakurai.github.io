@@ -9,16 +9,16 @@ It is often used for ISVs to publish their applications in the Azure Marketplace
 - Quickstart: https://docs.microsoft.com/en-us/azure/azure-resource-manager/managed-applications/publish-service-catalog-app?tabs=azure-powershell
 - Creating and deploying with CLI: https://docs.microsoft.com/en-us/azure/azure-resource-manager/managed-applications/scripts/managed-application-define-create-cli-sample
 ### My notes
-Tested below steps through the Azure Cloud Shell on 2022-07-27
+Tested below steps through the Azure Cloud Shell on 2022-07-27 (and some subsequent days after that)
 ```
 # Variable block
-POSTFIX=20220728try1temp
+APP_DEF=ManagedStorage
+POSTFIX=20220801try2temp
 appDefinitionResourceGroup=rg-$POSTFIX
 managedAppResourceGroup=rg-$POSTFIX
 appResourceGroup=mrg-$POSTFIX
 LOC=japaneast
 STO=st$POSTFIX
-managedApp=ManagedStorage
 tag="create-managed-application"
 
 # Make directory for work
@@ -52,12 +52,12 @@ exit
 ### Testing the UI
 https://portal.azure.com/?feature.customPortal=false&#blade/Microsoft_Azure_CreateUIDef/SandboxBlade
 
-#### Testing the ARM template by deploying it
-##### With Azure CLO
+#### Testing the ARM template
+##### With what-if
 Test if needed, e.g.,
-- deploy with `az deployment group create --resource-group $appDefinitionResourceGroup --template-file mainTemplate.json`
+- deploy with `az deployment group what-if --resource-group $appDefinitionResourceGroup --template-file mainTemplate.json`
 
-##### With URI
+##### Try deploying ith URI
 https://qiita.com/tsubasaxZZZ/items/e18d123a83ff2e0aa6f3  
 ```
 pwsh
@@ -75,16 +75,15 @@ $URI="https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeployme
 echo $URI
 ```
 
+### Create the zip file
 
 ```
 zip -r app.zip mainTemplate.json createUiDefinition.json
 ```
 
-
 https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsebassem%2FAzure-ARM-UI%2Fmain%2Fazuredeploy.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fsebassem%2FAzure-ARM-UI%2Fmain%2FazuredeployUI.json
 
 https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsebassem%2FAzure-ARM-UI%2Fmain%2Fazuredeploy.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fsebassem%2FAzure-ARM-UI%2Fmain%2FazuredeployUI.json
-
 
 #### Option 1: Upload to GitHub
 ```
@@ -94,7 +93,6 @@ git push
 
 packagefileuri=https://github.com/rukasakurai/managedapp/raw/main/app.zip
 ```
-
 ##### Option 2: Upload to Blob
 ```
 az storage account create \
@@ -122,12 +120,14 @@ packagefileuri=$(az storage blob url --account-name $STO --container-name appcon
 ```
 groupid=<groupId>
 
+roleid=$(az role definition list --name Reader --query [].name --output tsv)
 roleid=$(az role definition list --name Owner --query [].name --output tsv)
+roleid=$(az role definition list --name "Storage Account Contributor" --query [].name --output tsv) で作るとRGにもそれが付与される
 ```
 The definition prepared above
 ```
 az managedapp definition create \
-  --name $managedApp \
+  --name $APP_DEF \
   --location $LOC \
   --resource-group $appDefinitionResourceGroup \
   --lock-level ReadOnly \
@@ -136,6 +136,7 @@ az managedapp definition create \
   --authorizations "$groupid:$roleid" \
   --package-file-uri $packagefileuri
 ```
+
 Temp note: One of the definitions from the set of samples
 ```
 az managedapp definition create \
@@ -156,7 +157,7 @@ echo "Creating $managedAppResourceGroup in "$LOC"..."
 az group create --name $managedAppResourceGroup --location "$LOC" --tags $tag
 
 # Get ID of managed application definition
-appid=$(az managedapp definition show --name $managedApp --resource-group $appDefinitionResourceGroup --query id --output tsv)
+appid=$(az managedapp definition show --name $APP_DEF --resource-group $appDefinitionResourceGroup --query id --output tsv)
 
 # Get subscription ID
 subid=$(az account show --query id --output tsv)
@@ -176,15 +177,38 @@ https://arsenvlad.medium.com/setting-incremental-deployment-mode-for-azure-manag
 ## What I've tried
 I've tried updating the zip file referenced in package-file-uri of the application definition, and then the steps in Arsen Vladimirskiy's blog post to update via REST PUT (this seemed to be needed). But not sure this is the right approach.
 
-## ARMのテストや失敗時のロールバックについて
-### Syntax Error
-#### 1st time
-#### 2nd time (updating the resource)
+### GET the application definition
+```
+subid=$(az account show --query id --output tsv)
 
-### Azure Policy Error
-#### 1st time
-#### 2nd time (updating the resource)
+az rest --method get --url /subscriptions/$subid/resourceGroups/$managedAppResourceGroup/providers/Microsoft.Solutions/applicationDefinitions/$APP_DEF?api-version=2019-07-01 -o json > managedapp-definition.json
+```
+
+### Modify the JSON
+- Add the `packageFileUri`, which is missing
+  - Without it, the subsequent PUT will result in the erro `Bad Request({"error":{"code":"ApplicationDefinitionMissingRequiredProperties","message":"The application definition 'ManagedStorage' request is invalid because at least one of 'MainTemplate, CreateUiDefinition' properties is missing."}})`
+- Make any other modifications needed
+
+### PUT after modifying the JSON
+```
+az rest --method put --url /subscriptions/$subid/resourceGroups/$managedAppResourceGroup/providers/Microsoft.Solutions/applicationDefinitions/$APP_DEF?api-version=2019-07-01 --body @managedapp-definition.json -o json
+```
+(Tested that it's also possible to update the definition using an ARM template and `az deployment group create`)
 
 # Other notes
 ## Incremental / Complete
 Complete might be the recommended. Also it might not matter that much.
+
+# When deployment fails
+Q: After a deployment failure of a managed application (i.e., instanciating a managed application and its resource from a managed application definition), is it ok to just try to redeploy it again (e.g., after removing the issue that was causing the failure)?
+A: Delete the Managed Application, and redeploy
+- Deleting the Managed Application will delete the managed resource group and resources
+- Deleting is required since the "Managed Application Details - Application Name" cannot be the same with an exiting one
+
+# Updating an existing deployment definition and deployment
+Can't updated a managed application and its managed resources from an updated Service catalog managed application definition
+https://stackoverflow.microsoft.com/questions/317377
+https://stackoverflow.com/questions/65361860/how-to-update-existing-azure-managed-applications-with-a-new-package-version
+
+# Bring your own storage for the managed application definition
+https://docs.microsoft.com/en-us/azure/azure-resource-manager/managed-applications/publish-service-catalog-app?tabs=azure-powershell#bring-your-own-storage-for-the-managed-application-definition
