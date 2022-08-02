@@ -11,7 +11,6 @@ It is often used for ISVs to publish their applications in the Azure Marketplace
 ### My notes
 Tested below steps through the Azure Cloud Shell on 2022-07-27 (and some subsequent days after that)
 ```
-# Variable block
 APP_DEF=ManagedStorage
 POSTFIX=20220801try2temp
 appDefinitionResourceGroup=rg-$POSTFIX
@@ -21,14 +20,11 @@ LOC=japaneast
 STO=st$POSTFIX
 tag="create-managed-application"
 
-# Make directory for work
 mkdir $POSTFIX
 cd $POSTFIX
 
-# Create the resource group for the publisher
 az group create --name $appDefinitionResourceGroup --location $LOC
 
-# Prepare the ARM template set
 git clone https://github.com/rukasakurai/managedapp
 cd managedapp
 ```
