@@ -11,8 +11,8 @@ It is often used for ISVs to publish their applications in the Azure Marketplace
 ### My notes
 Tested below steps through the Azure Cloud Shell on 2022-07-27 (and some subsequent days after that)
 ```
-APP_DEF=ManagedStorage
-POSTFIX=20220801try2temp
+APP_DEF=Application_1
+POSTFIX=20220815try1temp
 appDefinitionResourceGroup=rg-$POSTFIX
 managedAppResourceGroup=rg-$POSTFIX
 appResourceGroup=mrg-$POSTFIX
@@ -76,7 +76,6 @@ echo $URI
 ```
 zip -r app.zip mainTemplate.json createUiDefinition.json
 ```
-
 https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsebassem%2FAzure-ARM-UI%2Fmain%2Fazuredeploy.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fsebassem%2FAzure-ARM-UI%2Fmain%2FazuredeployUI.json
 
 https://portal.azure.com/#blade/Microsoft_Azure_CreateUIDef/CustomDeploymentBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsebassem%2FAzure-ARM-UI%2Fmain%2Fazuredeploy.json/uiFormDefinitionUri/https%3A%2F%2Fraw.githubusercontent.com%2Fsebassem%2FAzure-ARM-UI%2Fmain%2FazuredeployUI.json
@@ -127,7 +126,7 @@ az managedapp definition create \
   --location $LOC \
   --resource-group $appDefinitionResourceGroup \
   --lock-level ReadOnly \
-  --display-name "Managed Storage Account" \
+  --display-name ${APP_DEF}_DisplayName \
   --description "Managed Azure Storage Account" \
   --authorizations "$groupid:$roleid" \
   --package-file-uri $packagefileuri
@@ -163,7 +162,7 @@ managedGroupId=/subscriptions/$subid/resourceGroups/$appResourceGroup
 
 # Create the managed application
 storageAccountNamePrefix=st${POSTFIX:0:5}
-az managedapp create --name storageApp --location "$LOC" --kind "Servicecatalog" --resource-group $managedAppResourceGroup --managedapp-definition-id $appid --managed-rg-id $managedGroupId --parameters "{\"storageAccountNamePrefix\": {\"value\": \"st$storageAccountNamePrefix\"}, \"storageAccountType\": {\"value\": \"Standard_LRS\"}}"
+az managedapp create --name storageApp --location "$LOC" --kind "Servicecatalog" --resource-group $appDefinitionResourceGroup --managedapp-definition-id $appid --managed-rg-id $managedGroupId --parameters "{\"storageAccountNamePrefix\": \"$storageAccountNamePrefix\", \"storageAccountType\": \"Standard_LRS\"}"
 ```
 
 ## How to update
@@ -184,6 +183,12 @@ az rest --method get --url /subscriptions/$subid/resourceGroups/$managedAppResou
 - Add the `packageFileUri`, which is missing
   - Without it, the subsequent PUT will result in the erro `Bad Request({"error":{"code":"ApplicationDefinitionMissingRequiredProperties","message":"The application definition 'ManagedStorage' request is invalid because at least one of 'MainTemplate, CreateUiDefinition' properties is missing."}})`
 - Make any other modifications needed
+```
+"properties": {
+    "deploymentPolicy": {
+    "packageFileUri": "<URI>",
+...
+```
 
 ### PUT after modifying the JSON
 ```
