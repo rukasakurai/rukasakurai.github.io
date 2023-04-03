@@ -17,3 +17,22 @@
 - Errors that require fixing records
 - Errors that require bug fixing (e.g., performance not meeting SLA)
 - Errors that require manual work (e.g., fix financial transactions)
+
+# Keywords/buzzwords
+Observability
+ELK: Elasticsearch, Logstash, Kibana (with all product maintained by Elastic)
+EFK: Elasticsearch, Fluentd, Kibana (with Fluentd maintained under Apache Licence v2.0)
+Elasticsearch
+Logstash
+Fluentd
+Kibana
+Prometheus
+Grafana
+Datadog
+Dynatrace
+CloudWatch
+Zabbix - Which I believe is strongest in network monitoring
+
+Scheduled Events
+
+ServiceNow
