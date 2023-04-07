@@ -1,6 +1,6 @@
 # 2022 March 1 notes
 Tried the following:
-https://docs.microsoft.com/en-us/azure/azure-monitor/app/azure-web-apps-net-core?tabs=Windows%2Cwindows
+https://docs.microsoft.com/en-us/azure/azure-monitor/app/azure-web-apps-net-core
 
 Choices
 - To apply the settings to a .NET Core 3.1 application on App Service that I had
