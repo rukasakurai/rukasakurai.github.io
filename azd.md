@@ -1,5 +1,6 @@
 Q: What is azd?
 A:
+- azd = Azure Developer CLI
 - Official doc: https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/overview
 - Azure Friday: https://youtu.be/VTk-FhJyo7s
 
