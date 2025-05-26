@@ -1,2 +1,6 @@
 private/
 temp/
+
+# Contains secrets
+.vscode/mcp.json
+.env

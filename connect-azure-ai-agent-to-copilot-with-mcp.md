@@ -18,43 +18,28 @@ Before you begin, ensure you have the following:
 
 ## Step 1: Setup Azure AI Agent as an MCP Server
 
-### Step 1.1: Azure Configuration
+### Options
 
-- Configure your Azure AI Agents in Azure AI Foundry.
-- Retrieve your Azure AI Project connection string and agent IDs.
-- Authenticate Azure CLI: `az login`
+#### https://github.com/azure-ai-foundry/mcp-foundry
 
-### Step 1.2: Setting Environment Variables
+I was able to get the Python version to work. Have not tried the TypeScript version.
 
-Create an .env file in your project’s root:
+#### https://devblogs.microsoft.com/foundry/integrating-azure-ai-agents-mcp
 
-```
-PROJECT_CONNECTION_STRING=your-project-connection-string
-DEFAULT_AGENT_ID=your-default-agent-id # optional
-```
+I could not get this to work.
 
-### Step 1.3: Server Installation and Execution
+Below is the error message.
 
-Set up a virtual environment and install dependencies:
-
-```
-uv venv
-source .venv/bin/activate # macOS/Linux
-.venv\Scripts\activate # Windows
-uv add mcp[cli] azure-identity python-dotenv azure-ai-projects aiohttp
-```
-
-Start the MCP server:
-
-```
-uv run -m python.azure_agent_mcp_server
+```GitBash
+$ uv run -m python.azure_agent_mcp_server
+C:\path-to-code-directory\github.com\rukasakurai\rukasakurai.github.io\.venv\Scripts\python.exe: Error while finding module specification for 'python.azure_agent_mcp_server' (ModuleNotFoundError: No module named 'python')
 ```
 
 ## Step 2: Setup VS Code as an MCP Client
 
 ### Step 2.1: Enable MCP Support in VS Code
 
-> **Note**: MCP support in agent mode in VS Code is available starting from VS Code 1.99 and is currently in preview.
+> **Note**: MCP support in agent mode in VS Code is available starting from VS Code 1.99 and is currently (2025-05-27) in preview.
 
 1. Open VS Code.
 2. Enable MCP support by navigating to Settings and enabling the **chat.mcp.enabled** setting, or add the following to your `settings.json` (press `Ctrl+Shift+P` to open the Command Palette, then type "Preferences: Open Settings (JSON)" and press Enter)
@@ -72,34 +57,36 @@ uv run -m python.azure_agent_mcp_server
 1. Create a `.vscode/mcp.json` file in your project directory.
 2. Add the following configuration:
 
-```
+```json
 {
-"mcpServers": {
-"azure-agent": {
-"command": "uv",
-"args": [
-"--directory",
-"/ABSOLUTE/PATH/TO/PARENT/FOLDER",
-"run",
-"-m",
-"azure_agent_mcp_server"
-],
-"env": {
-"PROJECT_CONNECTION_STRING": "your-project-connection-string",
-"DEFAULT_AGENT_ID": "your-default-agent-id"
-}
-}
-}
+  "servers": {
+    "azure-agent": {
+      "command": "python",
+      "args": ["-m", "azure_agent_mcp_server"],
+      "env": {
+        "PYTHONPATH": "path-to-code-for-azure_agent_mcp_server",
+        "PROJECT_CONNECTION_STRING": "your-project-connection-string",
+        "DEFAULT_AGENT_ID": "your-default-agent-id"
+      }
+    }
+  }
 }
 ```
+
+I had to specify the full paths to make it work
 
 ```json
 {
   "servers": {
-    "azureMcpServer": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@azure/mcp@latest", "server", "start"]
+    "azure-agent": {
+      "command": "C:\\path-to-code-directory\\azure-ai-foundry\\mcp-foundry\\src\\python\\.venv\\Scripts\\python.exe",
+      "args": ["-m", "azure_agent_mcp_server"],
+      "cwd": "C:\\path-to-code-directory\\azure-ai-foundry\\mcp-foundry\\src\\python",
+      "env": {
+        "PYTHONPATH": "C:\\path-to-code-directory\\azure-ai-foundry\\mcp-foundry\\src\\python",
+        "PROJECT_CONNECTION_STRING": "your-project-connection-string",
+        "DEFAULT_AGENT_ID": "your-default-agent-id"
+      }
     }
   }
 }
@@ -138,5 +125,3 @@ https://code.visualstudio.com/docs/copilot/chat/mcp-servers#_configuration-forma
 ---
 
 ## Troubleshooting
-
-<to add>
