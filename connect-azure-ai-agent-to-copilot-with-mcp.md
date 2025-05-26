@@ -1,121 +1,127 @@
-# 🚀 How to Connect GitHub Copilot to Azure AI Agent Service via MCP in Visual Studio Code
+# How to Connect GitHub Copilot to Azure AI Agent Service via MCP in Visual Studio Code
 
 The integration of GitHub Copilot with Azure AI Agent Service through the Model Context Protocol (MCP) empowers developers to create intelligent, context-aware applications. This guide walks you through setting up this integration in Visual Studio Code (VS Code).
 
 ---
 
-## 🧰 Prerequisites
+## Prerequisites
 
 Before you begin, ensure you have the following:
 
-* **Visual Studio Code**: Latest version installed.
-* **GitHub Copilot**: Active subscription.
-* **GitHub Copilot Chat Extension**: Installed in VS Code.
-* **Node.js**: Version 20 or higher.
-* **Azure Account**: With necessary permissions.([TECHCOMMUNITY.MICROSOFT.COM][1])
+- **Visual Studio Code**: Latest version installed.
+- **GitHub Copilot**: Active subscription.
+- **GitHub Copilot Chat Extension**: Installed in VS Code.
+- **Node.js**: Version 20 or higher.
+- **Azure Account**
 
 ---
 
-## 🔧 Step 1: Enable MCP Support in VS Code
+## Step 1: Setup Azure AI Agent as an MCP Server
 
-1. Open VS Code.
-2. Navigate to `Settings` > `Extensions` > `GitHub Copilot Chat`.
-3. Enable the **Agent Mode** feature.
-4. Ensure MCP support is enabled by adding the following to your `settings.json`:([GitHub][2])
+### Options
 
-   ```json
-   {
-     "chat.mcp.enabled": true
-   }
-   ```
+#### https://github.com/azure-ai-foundry/mcp-foundry
 
----
+I was able to get the Python version to work. Have not tried the TypeScript version.
 
-## 🛠️ Step 2: Install Azure MCP Server
+#### https://devblogs.microsoft.com/foundry/integrating-azure-ai-agents-mcp
 
-The Azure MCP Server acts as a bridge between GitHub Copilot and Azure AI Agent Service.([GitHub][2])
+I could not get this to work.
 
-### Option 1: One-Click Install
+Below is the error message.
 
-Run the following command in your terminal:
-
-```bash
-npx -y @azure/mcp@latest server start
+```GitBash
+$ uv run -m python.azure_agent_mcp_server
+C:\path-to-code-directory\github.com\rukasakurai\rukasakurai.github.io\.venv\Scripts\python.exe: Error while finding module specification for 'python.azure_agent_mcp_server' (ModuleNotFoundError: No module named 'python')
 ```
 
-### Option 2: Manual Configuration
+## Step 2: Setup VS Code as an MCP Client
 
-1. Create a `.vscode/mcp.json` file in your project directory.
-2. Add the following configuration:([TECHCOMMUNITY.MICROSOFT.COM][1])
+### Step 2.1: Enable MCP Support in VS Code
+
+> **Note**: MCP support in agent mode in VS Code is available starting from VS Code 1.99 and is currently (2025-05-27) in preview.
+
+1. Open VS Code.
+2. Enable MCP support by navigating to Settings and enabling the **chat.mcp.enabled** setting, or add the following to your `settings.json` (press `Ctrl+Shift+P` to open the Command Palette, then type "Preferences: Open Settings (JSON)" and press Enter)
 
    ```json
    {
-     "servers": {
-       "Azure MCP Server": {
-         "command": "npx",
-         "args": [
-           "-y",
-           "@azure/mcp@latest",
-           "server",
-           "start"
-         ]
-       }
-     }
+     "othersettings": "othersettingsvalue",
+     "chat.mcp.enabled": true,
+     "othersettings": "othersettingsvalue"
    }
    ```
 
-This setup allows VS Code to recognize and communicate with the Azure MCP Server.
+## Step 2.2: Configure the MCP client settings
+
+1. Create a `.vscode/mcp.json` file in your project directory.
+2. Add the following configuration:
+
+```json
+{
+  "servers": {
+    "azure-agent": {
+      "command": "python",
+      "args": ["-m", "azure_agent_mcp_server"],
+      "env": {
+        "PYTHONPATH": "path-to-code-for-azure_agent_mcp_server",
+        "PROJECT_CONNECTION_STRING": "your-project-connection-string",
+        "DEFAULT_AGENT_ID": "your-default-agent-id"
+      }
+    }
+  }
+}
+```
+
+I had to specify the full paths to make it work
+
+```json
+{
+  "servers": {
+    "azure-agent": {
+      "command": "C:\\path-to-code-directory\\azure-ai-foundry\\mcp-foundry\\src\\python\\.venv\\Scripts\\python.exe",
+      "args": ["-m", "azure_agent_mcp_server"],
+      "cwd": "C:\\path-to-code-directory\\azure-ai-foundry\\mcp-foundry\\src\\python",
+      "env": {
+        "PYTHONPATH": "C:\\path-to-code-directory\\azure-ai-foundry\\mcp-foundry\\src\\python",
+        "PROJECT_CONNECTION_STRING": "your-project-connection-string",
+        "DEFAULT_AGENT_ID": "your-default-agent-id"
+      }
+    }
+  }
+}
+```
+
+### Managing MCP Servers
+
+- Run the **MCP: List Servers** command from the Command Palette (Ctrl+Shift+P) to view and manage configured MCP servers
+- Use the **MCP: Add Server** command to add new servers through the UI
+- When you open the `.vscode/mcp.json` file, VS Code shows commands to start, stop, or restart servers directly from the editor
 
 ---
 
-## 🔐 Step 3: Authenticate with Azure
+## Step 4: Test the Integration
 
-Ensure that your environment is authenticated with Azure to allow the MCP server to access your Azure resources.([Visual Studio Code][3])
+1. Open the **GitHub Copilot Chat** panel in VS Code (⌃⌘I on Mac, Ctrl+Alt+I on Windows/Linux).
+2. Switch to **Agent Mode** from the dropdown menu.
+3. Select the **Tools** button to view available tools and verify that **NAME** tools are listed.
+4. Optionally, select or deselect the tools you want to use. You can search tools by typing in the search box.
+5. Try a prompt like:
 
-1. Install the Azure CLI if you haven't already.
-2. Run the following command to log in:
-
-   ```bash
-   az login
+   ```
+   <Prompt>
    ```
 
-This command opens a browser window for you to sign in with your Azure credentials.
+6. When a tool is invoked, you'll need to confirm the action before it runs (by default). You can use the **Continue** button dropdown options to automatically confirm specific tools for the current session, workspace, or all future invocations.
+
+> **Tip**: You can also directly reference a tool in your prompt by typing `#` followed by the tool name. This works in all chat modes (ask, edit, and agent mode).
 
 ---
 
-## 🧪 Step 4: Test the Integration
+## Understanding MCP in VS Code
 
-1. Open the **GitHub Copilot Chat** panel in VS Code.
-2. Switch to **Agent Mode**.
-3. You should see **Azure MCP Server** listed under available tools.
-4. Try a prompt like:([GitHub][2])
-
-   ```
-   List my Azure Storage containers.
-   ```
-
-GitHub Copilot will utilize the Azure MCP Server to fetch and display your Azure Storage containers.([GitHub][2])
+https://code.visualstudio.com/docs/copilot/chat/mcp-servers#_configuration-format
 
 ---
 
-## 🧠 Understanding MCP
-
-The Model Context Protocol (MCP) is an open standard that enables AI models to interact with external tools and services through a unified interface. By integrating MCP, GitHub Copilot can access Azure services, enhancing its capabilities to assist in development tasks. ([Visual Studio Code][3])
-
----
-
-## 📚 Additional Resources
-
-* **Azure MCP Server GitHub Repository**: [https://github.com/Azure/azure-mcp](https://github.com/Azure/azure-mcp)
-* **VS Code MCP Server Documentation**: [https://code.visualstudio.com/docs/copilot/chat/mcp-servers](https://code.visualstudio.com/docs/copilot/chat/mcp-servers)
-* **Azure AI Foundry Blog**: [https://azure.microsoft.com/en-us/blog/azure-ai-foundry-your-ai-app-and-agent-factory/](https://azure.microsoft.com/en-us/blog/azure-ai-foundry-your-ai-app-and-agent-factory/)([Visual Studio Code][3])
-
----
-
-By following these steps, you can harness the power of GitHub Copilot and Azure AI Agent Service to build intelligent, context-aware applications directly within Visual Studio Code.
-
----
-
-[1]: https://techcommunity.microsoft.com/blog/azuredevcommunityblog/getting-started-with-azure-mcp-server-a-guide-for-developers/4408974?utm_source=chatgpt.com "Getting Started with Azure MCP Server: A Guide for Developers"
-[2]: https://github.com/Azure/azure-mcp?utm_source=chatgpt.com "The Azure MCP Server, bringing the power of Azure to your agents."
-[3]: https://code.visualstudio.com/docs/copilot/chat/mcp-servers?utm_source=chatgpt.com "Use MCP servers in VS Code (Preview)"
+## Troubleshooting
